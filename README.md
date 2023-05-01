@@ -5,13 +5,13 @@ A Java client library for interacting with the Blue Sky Social API, providing he
 
 ### GET
 - [x] [/author-feed](https://atproto.com/lexicons/app-bsky-feed#appbskyfeedgetauthorfeed)
+- [ ] [/likes](https://atproto.com/lexicons/app-bsky-feed#appbskyfeedgetlikes)
+- [ ] [/timeline](https://atproto.com/lexicons/app-bsky-feed#appbskyfeedgettimeline)
+- [ ] [/post-thread](https://atproto.com/lexicons/app-bsky-feed#appbskyfeedgetpostthread)
 
 ### POST
 - [x] [/post](https://atproto.com/lexicons/com-atproto-repo#comatprotorepocreaterecord)
 - [x] /login
-
-### DELETE
-- [ ] /post
 
 ### WIP
 Support Twitter and BlueSky API

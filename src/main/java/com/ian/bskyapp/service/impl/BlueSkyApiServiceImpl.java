@@ -1,6 +1,8 @@
 package com.ian.bskyapp.service.impl;
 
 import com.ian.bskyapp.entity.*;
+import com.ian.bskyapp.entity.dto.Followers;
+import com.ian.bskyapp.entity.dto.Follows;
 import com.ian.bskyapp.service.BlueSkyApiService;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
@@ -55,6 +57,12 @@ public class BlueSkyApiServiceImpl implements BlueSkyApiService {
         HttpUrl url = buildUrl("xrpc/app.bsky.graph.getFollowers", "actor", session.did());
 
         return executeGetRequest(session, url, Followers.class);
+    }
+
+    public Follows getFollows(Session session) {
+        HttpUrl url = buildUrl("xrpc/app.bsky.graph.getFollows", "actor", session.did());
+
+        return executeGetRequest(session, url, Follows.class);
     }
 
     public Feeds getAuthorFeed(Session session) {

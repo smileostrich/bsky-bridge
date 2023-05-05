@@ -1,4 +1,6 @@
-package com.ian.bskyapp.entity;
+package com.ian.bskyapp.entity.dto;
+
+import com.ian.bskyapp.entity.Actor;
 
 import java.util.List;
 

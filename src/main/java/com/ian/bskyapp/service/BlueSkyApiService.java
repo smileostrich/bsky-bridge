@@ -1,6 +1,8 @@
 package com.ian.bskyapp.service;
 
 import com.ian.bskyapp.entity.*;
+import com.ian.bskyapp.entity.dto.Followers;
+import com.ian.bskyapp.entity.dto.Follows;
 
 public interface BlueSkyApiService {
 
@@ -13,6 +15,8 @@ public interface BlueSkyApiService {
     void follow(Session session, String did);
 
     Followers getFollowers(Session session);
+
+    Follows getFollows(Session session);
 
     Feeds getAuthorFeed(Session session);
 

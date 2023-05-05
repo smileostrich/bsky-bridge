@@ -1,9 +1,7 @@
 package com.ian.bskyapp.controller;
 
 import com.ian.bskyapp.entity.*;
-import com.ian.bskyapp.entity.dto.CreatePostDto;
-import com.ian.bskyapp.entity.dto.FollowDto;
-import com.ian.bskyapp.entity.dto.User;
+import com.ian.bskyapp.entity.dto.*;
 import com.ian.bskyapp.service.BlueSkyApiService;
 import com.ian.bskyapp.service.UserService;
 import org.springframework.http.HttpHeaders;
@@ -51,6 +49,11 @@ public class BlueSkyRestController {
     @GetMapping("/followers")
     public Followers getFollowers(@RequestHeader HttpHeaders headers) {
         return blueSkyApiService.getFollowers(parseHeader(headers));
+    }
+
+    @GetMapping("/follows")
+    public Follows getFollows(@RequestHeader HttpHeaders headers) {
+        return blueSkyApiService.getFollows(parseHeader(headers));
     }
 
     @GetMapping("/author-feed")

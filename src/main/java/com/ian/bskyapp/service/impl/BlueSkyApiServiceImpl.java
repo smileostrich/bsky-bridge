@@ -1,7 +1,7 @@
 package com.ian.bskyapp.service.impl;
 
 import com.ian.bskyapp.api.Session;
-import com.ian.bskyapp.entity.AuthorFeed;
+import com.ian.bskyapp.entity.Feeds;
 import com.ian.bskyapp.service.BlueSkyApiService;
 import okhttp3.*;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ public class BlueSkyApiServiceImpl implements BlueSkyApiService {
     private static final String HTTPS = "https";
     private static final String API_FEED_POST = "app.bsky.feed.post";
 
-    public AuthorFeed getAuthorFeed(Session session) {
+    public Feeds getAuthorFeed(Session session) {
         HttpUrl url = new HttpUrl.Builder()
                 .scheme(HTTPS)
                 .host(HOST)
@@ -38,7 +38,7 @@ public class BlueSkyApiServiceImpl implements BlueSkyApiService {
             if (response.code() == 400)
                 throw new IllegalStateException("API error: " + response.body().string());
 
-            return objectMapperWithDate().readValue(response.body().string(), AuthorFeed.class);
+            return objectMapperWithDate().readValue(response.body().string(), Feeds.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -83,6 +83,30 @@ public class BlueSkyApiServiceImpl implements BlueSkyApiService {
                 throw new IllegalStateException("API error: " + response.body().string());
         } catch (IOException e) {
             throw new IllegalStateException(e);
+        }
+    }
+
+    public Feeds getTimeLine(Session session) {
+        HttpUrl url = new HttpUrl.Builder()
+                .scheme(HTTPS)
+                .host(HOST)
+                .addPathSegments("xrpc/app.bsky.feed.getTimeline")
+                .addEncodedQueryParameter("actor", session.did())
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Authorization", "Bearer %s".formatted(session.jwt().access()))
+                .addHeader("Content-Type", "application/json")
+                .build();
+
+        try (Response response = new OkHttpClient().newCall(request).execute()) {
+            if (response.code() == 400)
+                throw new IllegalStateException("API error: " + response.body().string());
+
+            return objectMapperWithDate().readValue(response.body().string(), Feeds.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

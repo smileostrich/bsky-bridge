@@ -1,7 +1,7 @@
 package com.ian.bskyapp.controller;
 
 import com.ian.bskyapp.api.Session;
-import com.ian.bskyapp.entity.AuthorFeed;
+import com.ian.bskyapp.entity.Feeds;
 import com.ian.bskyapp.entity.dto.User;
 import com.ian.bskyapp.entity.dto.CreatePostDto;
 import com.ian.bskyapp.service.BlueSkyApiService;
@@ -33,18 +33,13 @@ public class BlueSkyRestController {
     }
 
     @GetMapping("/author-feed")
-    public AuthorFeed getAuthorFeed(@RequestHeader HttpHeaders headers) {
+    public Feeds getAuthorFeed(@RequestHeader HttpHeaders headers) {
         return blueSkyApiService.getAuthorFeed(parseHeader(headers));
     }
 
-    @GetMapping("/profile")
-    public String getProfile() {
-        return "Not implemented";
-    }
-
     @GetMapping("/timeline")
-    public String getTimeline() {
-        return "Not implemented";
+    public Feeds getTimeline(@RequestHeader HttpHeaders headers) {
+        return blueSkyApiService.getTimeLine(parseHeader(headers));
     }
 
     // for poc virtual thread

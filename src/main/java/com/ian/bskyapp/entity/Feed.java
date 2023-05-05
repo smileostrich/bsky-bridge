@@ -1,6 +1,7 @@
 package com.ian.bskyapp.entity;
 
-public record FeedViewPost(
+public record Feed(
         PostView post,
+        Reason reason,
         Reply reply) {
 }

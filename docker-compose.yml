@@ -2,8 +2,6 @@ version: '3.8'
 
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: bluesky-api-client:latest
     ports:
       - "80:8080"

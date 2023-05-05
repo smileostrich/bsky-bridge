@@ -42,8 +42,13 @@ public class BlueSkyRestController {
     }
 
     @PostMapping("/follow")
-    public void follow(@RequestHeader HttpHeaders headers, @RequestBody FollowDto dto) {
+    public void follow(@RequestHeader HttpHeaders headers, @RequestBody Did dto) {
         blueSkyApiService.follow(parseHeader(headers), dto.did());
+    }
+
+    @PostMapping("/block")
+    public void block(@RequestHeader HttpHeaders headers, @RequestBody Did dto) {
+        blueSkyApiService.block(parseHeader(headers), dto.did());
     }
 
     @GetMapping("/followers")

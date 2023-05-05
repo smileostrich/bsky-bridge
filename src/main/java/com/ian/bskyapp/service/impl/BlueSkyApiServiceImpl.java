@@ -28,6 +28,7 @@ public class BlueSkyApiServiceImpl implements BlueSkyApiService {
     private static final String API_FEED_REPOST = "app.bsky.feed.repost";
     private static final String API_FEED_LIKE = "app.bsky.feed.like";
     private static final String API_GRAPH_FOLLOW = "app.bsky.graph.follow";
+    private static final String API_GRAPH_BLOCK = "app.bsky.graph.block";
 
     public void createPost(Session session, String text) {
         executePostRequest(session,
@@ -51,6 +52,12 @@ public class BlueSkyApiServiceImpl implements BlueSkyApiService {
         executePostRequest(session,
                 parseRecord(API_GRAPH_FOLLOW, "subject", did),
                 API_GRAPH_FOLLOW);
+    }
+
+    public void block(Session session, String did) {
+        executePostRequest(session,
+                parseRecord(API_GRAPH_BLOCK, "subject", did),
+                API_GRAPH_BLOCK);
     }
 
     public Followers getFollowers(Session session) {

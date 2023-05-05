@@ -14,6 +14,8 @@ public interface BlueSkyApiService {
 
     void follow(Session session, String did);
 
+    void block(Session session, String did);
+
     Followers getFollowers(Session session);
 
     Follows getFollows(Session session);

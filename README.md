@@ -53,8 +53,22 @@ docker-compose up -d
   - **Request Body:** JSON object
     - `did`: String
 
+- **Endpoint:** `/block`
+  - **Request Headers:**
+    - Authorization: Bearer {token}
+    - DID: {did}
+    - Handle: {handle}
+  - **Request Body:** JSON object
+    - `did`: String
+
 ### GET
 - **Endpoint:** `/followers`
+  - **Request Headers:**
+    - Authorization: Bearer {token}
+    - Did: {did}
+    - Handle: {handle}
+
+- **Endpoint:** `/follows`
   - **Request Headers:**
     - Authorization: Bearer {token}
     - Did: {did}

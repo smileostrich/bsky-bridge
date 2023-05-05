@@ -1,5 +1,5 @@
 package com.ian.bskyapp.entity.dto;
 
-public record FollowDto(
+public record Did(
         String did) {
 }

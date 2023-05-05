@@ -36,6 +36,14 @@ docker-compose up -d
     - `cid`: String
     - `uri`: String
 
+- **Endpoint:** `/follow`
+  - **Request Headers:**
+    - Authorization: Bearer {token}
+    - DID: {did}
+    - Handle: {handle}
+  - **Request Body:** JSON object
+    - `did`: String
+
 ### GET
 - **Endpoint:** `/author-feed`
   - **Request Headers:**

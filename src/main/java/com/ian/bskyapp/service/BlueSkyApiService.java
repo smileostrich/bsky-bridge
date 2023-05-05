@@ -11,6 +11,8 @@ public interface BlueSkyApiService {
 
     void like(Session session, StrongRef strongRef);
 
+    void follow(Session session, String did);
+
     Feeds getAuthorFeed(Session session);
 
     Feeds getTimeLine(Session session);

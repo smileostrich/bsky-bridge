@@ -5,6 +5,7 @@ import com.ian.bskyapp.entity.Feeds;
 import com.ian.bskyapp.entity.Likes;
 import com.ian.bskyapp.entity.StrongRef;
 import com.ian.bskyapp.entity.dto.CreatePostDto;
+import com.ian.bskyapp.entity.dto.FollowDto;
 import com.ian.bskyapp.entity.dto.User;
 import com.ian.bskyapp.service.BlueSkyApiService;
 import com.ian.bskyapp.service.UserService;
@@ -38,6 +39,11 @@ public class BlueSkyRestController {
     @PostMapping("/like")
     public void like(@RequestHeader HttpHeaders headers, @RequestBody StrongRef strongRef) {
         blueSkyApiService.like(parseHeader(headers), strongRef);
+    }
+
+    @PostMapping("/follow")
+    public void follow(@RequestHeader HttpHeaders headers, @RequestBody FollowDto dto) {
+        blueSkyApiService.follow(parseHeader(headers), dto.did());
     }
 
     @GetMapping("/author-feed")

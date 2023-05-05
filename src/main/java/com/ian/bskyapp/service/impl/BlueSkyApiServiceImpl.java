@@ -26,6 +26,7 @@ public class BlueSkyApiServiceImpl implements BlueSkyApiService {
 
     private static final String API_FEED_POST = "app.bsky.feed.post";
     private static final String API_FEED_LIKE = "app.bsky.feed.like";
+    private static final String API_GRAPH_FOLLOW = "app.bsky.graph.follow";
 
     public void createPost(Session session, String text) {
         HttpUrl url = new HttpUrl.Builder()
@@ -73,7 +74,7 @@ public class BlueSkyApiServiceImpl implements BlueSkyApiService {
         HttpUrl url = new HttpUrl.Builder()
                 .scheme(HTTPS)
                 .host(HOST)
-                .addPathSegments("xrpc/com.atproto.repo.createRecord")
+                .addPathSegments(API_REPO_CREATE_RECORD)
                 .build();
 
         Map<String, Object> record = Map.of(
@@ -85,6 +86,48 @@ public class BlueSkyApiServiceImpl implements BlueSkyApiService {
         Map<String, Object> map = Map.of(
                 "collection", API_FEED_LIKE,
                 "$type", API_FEED_LIKE,
+                "repo", session.did(),
+                "record", record
+        );
+
+        RequestBody body;
+        try {
+            body = RequestBody.create(objectMapperWithDate()
+                    .writeValueAsString(map),MediaType.get("application/json"));
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader(HEADER_AUTH, "Bearer %s".formatted(session.jwt().access()))
+                .post(body)
+                .build();
+
+        try (Response response = new OkHttpClient().newCall(request).execute()) {
+            if (response.code() == 400)
+                throw new IllegalStateException("API error: " + response.body().string());
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    public void follow(Session session, String did) {
+        HttpUrl url = new HttpUrl.Builder()
+                .scheme(HTTPS)
+                .host(HOST)
+                .addPathSegments(API_REPO_CREATE_RECORD)
+                .build();
+
+        Map<String, Object> record = Map.of(
+                "$type", API_GRAPH_FOLLOW,
+                "subject", did,
+                "createdAt", LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)
+        );
+
+        Map<String, Object> map = Map.of(
+                "collection", API_GRAPH_FOLLOW,
+                "$type", API_GRAPH_FOLLOW,
                 "repo", session.did(),
                 "record", record
         );

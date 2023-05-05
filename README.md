@@ -13,47 +13,48 @@ docker-compose up -d
 
 ## Rest API Endpoints
 
-### User Login
+### POST
 - **Endpoint:** `/login`
-- **Method:** POST
-- **Request Body:** JSON object
-  - `identifier`: A unique identifier for the user (not null)
-  - `password`: The user's password (not null)
+  - **Request Body:** JSON object
+    - `identifier`: A unique identifier for the user (not null)
+    - `password`: The user's password (not null)
 
-### Create Post
 - **Endpoint:** `/post`
-- **Method:** POST
-- **Request Headers:**
-  - Authorization: Bearer {token}
-  - DID: {did}
-  - Handle: {handle}
-- **Request Body:** JSON object
-    - `text`: String
+  - **Request Headers:**
+    - Authorization: Bearer {token}
+    - Did: {did}
+    - Handle: {handle}
+  - **Request Body:** JSON object
+      - `text`: String
 
-### Get Author Feed
+- **Endpoint:** `/like`
+  - **Request Headers:**
+    - Authorization: Bearer {token}
+    - Did: {did}
+    - Handle: {handle}
+  - **Request Body:** JSON object
+    - `cid`: String
+    - `uri`: String
+
+### GET
 - **Endpoint:** `/author-feed`
-- **Method:** GET
-- **Request Headers:**
-  - Authorization: Bearer {token}
-  - DID: {did}
-  - Handle: {handle}
+  - **Request Headers:**
+    - Authorization: Bearer {token}
+    - Did: {did}
+    - Handle: {handle}
 
-### Get Timeline
 - **Endpoint:** `/timeline`
-- **Method:** GET
-- **Request Headers:**
-  - Authorization: Bearer {token}
-  - DID: {did}
-  - Handle: {handle}
+  - **Request Headers:**
+    - Authorization: Bearer {token}
+    - Did: {did}
+    - Handle: {handle}
 
-### Get Likes
 - **Endpoint:** `/did/{did}/post/{post}/likes`
-- **Method:** GET
-- **Request Headers:**
-  - Authorization: Bearer {token}
-  - DID: {did}
-  - Handle: {handle}
-- **Path Variables:** `did`, `postId`
+  - **Path Variables:** `did`, `postId`
+  - **Request Headers:**
+    - Authorization: Bearer {token}
+    - Did: {did}
+    - Handle: {handle}
 
 ## WIP
 Support Twitter and BlueSky API

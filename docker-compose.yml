@@ -2,6 +2,6 @@ version: '3.8'
 
 services:
   app:
-    image: bluesky-api-client:latest
+    image: happyostrich/bluesky-api-client:latest
     ports:
       - "80:8080"

@@ -1,9 +1,6 @@
 package com.ian.bskyapp.controller;
 
-import com.ian.bskyapp.entity.Session;
-import com.ian.bskyapp.entity.Feeds;
-import com.ian.bskyapp.entity.Likes;
-import com.ian.bskyapp.entity.StrongRef;
+import com.ian.bskyapp.entity.*;
 import com.ian.bskyapp.entity.dto.CreatePostDto;
 import com.ian.bskyapp.entity.dto.FollowDto;
 import com.ian.bskyapp.entity.dto.User;
@@ -49,6 +46,11 @@ public class BlueSkyRestController {
     @PostMapping("/follow")
     public void follow(@RequestHeader HttpHeaders headers, @RequestBody FollowDto dto) {
         blueSkyApiService.follow(parseHeader(headers), dto.did());
+    }
+
+    @GetMapping("/followers")
+    public Followers getFollowers(@RequestHeader HttpHeaders headers) {
+        return blueSkyApiService.getFollowers(parseHeader(headers));
     }
 
     @GetMapping("/author-feed")

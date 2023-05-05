@@ -1,9 +1,6 @@
 package com.ian.bskyapp.service;
 
-import com.ian.bskyapp.entity.Session;
-import com.ian.bskyapp.entity.Feeds;
-import com.ian.bskyapp.entity.Likes;
-import com.ian.bskyapp.entity.StrongRef;
+import com.ian.bskyapp.entity.*;
 
 public interface BlueSkyApiService {
 
@@ -14,6 +11,8 @@ public interface BlueSkyApiService {
     void like(Session session, StrongRef strongRef);
 
     void follow(Session session, String did);
+
+    Followers getFollowers(Session session);
 
     Feeds getAuthorFeed(Session session);
 

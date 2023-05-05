@@ -1,9 +1,6 @@
 package com.ian.bskyapp.service.impl;
 
-import com.ian.bskyapp.entity.Session;
-import com.ian.bskyapp.entity.Feeds;
-import com.ian.bskyapp.entity.Likes;
-import com.ian.bskyapp.entity.StrongRef;
+import com.ian.bskyapp.entity.*;
 import com.ian.bskyapp.service.BlueSkyApiService;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
@@ -31,93 +28,74 @@ public class BlueSkyApiServiceImpl implements BlueSkyApiService {
     private static final String API_GRAPH_FOLLOW = "app.bsky.graph.follow";
 
     public void createPost(Session session, String text) {
-        postCall(session,
+        executePostRequest(session,
                 parseRecord(API_FEED_POST, "text", text),
                 API_FEED_POST);
     }
 
     public void repost(Session session, StrongRef strongRef) {
-        postCall(session,
+        executePostRequest(session,
                 parseRecord(API_FEED_REPOST, "subject", strongRef),
                 API_FEED_REPOST);
     }
 
     public void like(Session session, StrongRef strongRef) {
-        postCall(session,
+        executePostRequest(session,
                 parseRecord(API_FEED_LIKE, "subject", strongRef),
                 API_FEED_LIKE);
     }
 
     public void follow(Session session, String did) {
-        postCall(session,
+        executePostRequest(session,
                 parseRecord(API_GRAPH_FOLLOW, "subject", did),
                 API_GRAPH_FOLLOW);
     }
 
+    public Followers getFollowers(Session session) {
+        HttpUrl url = buildUrl("xrpc/app.bsky.graph.getFollowers", "actor", session.did());
+
+        return executeGetRequest(session, url, Followers.class);
+    }
+
     public Feeds getAuthorFeed(Session session) {
-        HttpUrl url = new HttpUrl.Builder()
-                .scheme(HTTPS)
-                .host(HOST)
-                .addPathSegments("xrpc/app.bsky.feed.getAuthorFeed")
-                .addEncodedQueryParameter("actor", session.did())
-                .build();
+        HttpUrl url = buildUrl("xrpc/app.bsky.feed.getAuthorFeed", "actor", session.did());
 
-        Request request = new Request.Builder()
-                .url(url)
-                .addHeader(HEADER_AUTH, "Bearer %s".formatted(session.jwt().access()))
-                .build();
-
-        try (Response response = new OkHttpClient().newCall(request).execute()) {
-            if (response.code() == 400)
-                throw new IllegalStateException("API error: " + response.body().string());
-
-            return objectMapperWithDate().readValue(response.body().string(), Feeds.class);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return executeGetRequest(session, url, Feeds.class);
     }
 
     public Feeds getTimeLine(Session session) {
-        HttpUrl url = new HttpUrl.Builder()
-                .scheme(HTTPS)
-                .host(HOST)
-                .addPathSegments("xrpc/app.bsky.feed.getTimeline")
-                .addEncodedQueryParameter("actor", session.did())
-                .build();
+        HttpUrl url = buildUrl("xrpc/app.bsky.feed.getTimeline", "actor", session.did());
 
-        Request request = new Request.Builder()
-                .url(url)
-                .addHeader(HEADER_AUTH, "Bearer %s".formatted(session.jwt().access()))
-                .build();
-
-        try (Response response = new OkHttpClient().newCall(request).execute()) {
-            if (response.code() == 400)
-                throw new IllegalStateException("API error: " + response.body().string());
-
-            return objectMapperWithDate().readValue(response.body().string(), Feeds.class);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return executeGetRequest(session, url, Feeds.class);
     }
 
     public Likes getLikes(Session session, String uri) {
-        HttpUrl url = new HttpUrl.Builder()
+        HttpUrl url = buildUrl("xrpc/app.bsky.feed.getLikes", "uri", uri);
+
+        return executeGetRequest(session, url, Likes.class);
+    }
+
+    private HttpUrl buildUrl(String pathSegments, String queryParamKey, String queryParamValue) {
+        return new HttpUrl.Builder()
                 .scheme(HTTPS)
                 .host(HOST)
-                .addPathSegments("xrpc/app.bsky.feed.getLikes")
-                .addEncodedQueryParameter("uri", uri)
+                .addPathSegments(pathSegments)
+                .addEncodedQueryParameter(queryParamKey, queryParamValue)
                 .build();
+    }
 
+    private <T> T executeGetRequest(Session session, HttpUrl url, Class<T> responseType) {
         Request request = new Request.Builder()
                 .url(url)
                 .addHeader(HEADER_AUTH, "Bearer %s".formatted(session.jwt().access()))
                 .build();
 
         try (Response response = new OkHttpClient().newCall(request).execute()) {
-            if (response.code() == 400)
+            if (response.code() == 400) {
                 throw new IllegalStateException("API error: " + response.body().string());
+            }
 
-            return objectMapperWithDate().readValue(response.body().string(), Likes.class);
+            return objectMapperWithDate().readValue(response.body().string(), responseType);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -131,7 +109,7 @@ public class BlueSkyApiServiceImpl implements BlueSkyApiService {
         );
     }
 
-    private void postCall(Session session, Map<String, Object> record, String type) {
+    private void executePostRequest(Session session, Map<String, Object> record, String type) {
         HttpUrl url = new HttpUrl.Builder()
                 .scheme(HTTPS)
                 .host(HOST)

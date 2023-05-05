@@ -54,6 +54,12 @@ docker-compose up -d
     - `did`: String
 
 ### GET
+- **Endpoint:** `/followers`
+  - **Request Headers:**
+    - Authorization: Bearer {token}
+    - Did: {did}
+    - Handle: {handle}
+
 - **Endpoint:** `/author-feed`
   - **Request Headers:**
     - Authorization: Bearer {token}

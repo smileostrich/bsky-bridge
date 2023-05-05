@@ -11,17 +11,49 @@ Providing helper methods for authentication, fetching timelines, and managing co
 docker-compose up -d
 ```
 
-## API
+## Rest API Endpoints
 
-### GET
-- [x] [/author-feed](https://atproto.com/lexicons/app-bsky-feed#appbskyfeedgetauthorfeed)
-- [x] [/timeline](https://atproto.com/lexicons/app-bsky-feed#appbskyfeedgettimeline)
-- [x] [/likes](https://atproto.com/lexicons/app-bsky-feed#appbskyfeedgetlikes)
-- [ ] [/post-thread](https://atproto.com/lexicons/app-bsky-feed#appbskyfeedgetpostthread)
+### User Login
+- **Endpoint:** `/login`
+- **Method:** POST
+- **Request Body:** JSON object
+  - `identifier`: A unique identifier for the user (not null)
+  - `password`: The user's password (not null)
 
-### POST
-- [x] [/post](https://atproto.com/lexicons/com-atproto-repo#comatprotorepocreaterecord)
-- [x] /login
+### Create Post
+- **Endpoint:** `/post`
+- **Method:** POST
+- **Request Headers:**
+  - Authorization: Bearer {token}
+  - DID: {did}
+  - Handle: {handle}
+- **Request Body:** JSON object
+    - `text`: String
 
-### WIP
+### Get Author Feed
+- **Endpoint:** `/author-feed`
+- **Method:** GET
+- **Request Headers:**
+  - Authorization: Bearer {token}
+  - DID: {did}
+  - Handle: {handle}
+
+### Get Timeline
+- **Endpoint:** `/timeline`
+- **Method:** GET
+- **Request Headers:**
+  - Authorization: Bearer {token}
+  - DID: {did}
+  - Handle: {handle}
+
+### Get Likes
+- **Endpoint:** `/did/{did}/post/{post}/likes`
+- **Method:** GET
+- **Request Headers:**
+  - Authorization: Bearer {token}
+  - DID: {did}
+  - Handle: {handle}
+- **Path Variables:** `did`, `postId`
+
+## WIP
 Support Twitter and BlueSky API

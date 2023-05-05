@@ -25,7 +25,7 @@ public class HttpUtil {
                 headers.getFirst(HEADER_DID),
                 headers.getFirst(HEADER_HANDLE),
                 new Jwt(resolveToken(headers.getFirst(HEADER_AUTHORIZATION)),
-                        resolveToken(headers.getFirst(HEADER_REFRESH)))
+                        headers.get(HEADER_REFRESH) != null ? resolveToken(headers.getFirst(HEADER_REFRESH)) : null)
         );
     }
 

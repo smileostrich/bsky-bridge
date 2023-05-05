@@ -1,7 +1,7 @@
 package com.ian.bskyapp.service.impl;
 
-import com.ian.bskyapp.api.Jwt;
-import com.ian.bskyapp.api.Session;
+import com.ian.bskyapp.entity.Jwt;
+import com.ian.bskyapp.entity.Session;
 import com.ian.bskyapp.entity.CreateSession;
 import com.ian.bskyapp.entity.dto.User;
 import com.ian.bskyapp.service.UserService;

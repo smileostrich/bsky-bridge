@@ -1,6 +1,6 @@
 package com.ian.bskyapp.controller;
 
-import com.ian.bskyapp.api.Session;
+import com.ian.bskyapp.entity.Session;
 import com.ian.bskyapp.entity.Feeds;
 import com.ian.bskyapp.entity.Likes;
 import com.ian.bskyapp.entity.StrongRef;
@@ -34,6 +34,11 @@ public class BlueSkyRestController {
     @PostMapping("/post")
     public void createPost(@RequestHeader HttpHeaders headers, @RequestBody CreatePostDto dto) {
         blueSkyApiService.createPost(parseHeader(headers), dto.text());
+    }
+
+    @PostMapping("/repost")
+    public void repost(@RequestHeader HttpHeaders headers, @RequestBody StrongRef strongRef) {
+        blueSkyApiService.repost(parseHeader(headers), strongRef);
     }
 
     @PostMapping("/like")

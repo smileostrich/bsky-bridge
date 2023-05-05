@@ -1,4 +1,4 @@
-package com.ian.bskyapp.api;
+package com.ian.bskyapp.entity;
 
 public record Jwt(
         String access,

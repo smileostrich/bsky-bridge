@@ -1,7 +1,7 @@
 package com.ian.bskyapp.util;
 
-import com.ian.bskyapp.api.Jwt;
-import com.ian.bskyapp.api.Session;
+import com.ian.bskyapp.entity.Jwt;
+import com.ian.bskyapp.entity.Session;
 import org.springframework.http.HttpHeaders;
 import org.springframework.util.StringUtils;
 

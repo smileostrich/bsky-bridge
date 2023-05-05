@@ -27,6 +27,15 @@ docker-compose up -d
   - **Request Body:** JSON object
       - `text`: String
 
+- **Endpoint:** `/repost`
+  - **Request Headers:**
+    - Authorization: Bearer {token}
+    - Did: {did}
+    - Handle: {handle}
+  - **Request Body:** JSON object
+    - `cid`: String
+    - `uri`: String
+
 - **Endpoint:** `/like`
   - **Request Headers:**
     - Authorization: Bearer {token}

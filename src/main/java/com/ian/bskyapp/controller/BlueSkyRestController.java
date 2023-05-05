@@ -52,13 +52,27 @@ public class BlueSkyRestController {
     }
 
     @GetMapping("/followers")
-    public Followers getFollowers(@RequestHeader HttpHeaders headers) {
-        return blueSkyApiService.getFollowers(parseHeader(headers));
+    public Followers getMyFollowers(@RequestHeader HttpHeaders headers) {
+        Session session = parseHeader(headers);
+
+        return blueSkyApiService.getFollowers(session, session.did());
     }
 
     @GetMapping("/follows")
-    public Follows getFollows(@RequestHeader HttpHeaders headers) {
-        return blueSkyApiService.getFollows(parseHeader(headers));
+    public Follows getMyFollows(@RequestHeader HttpHeaders headers) {
+        Session session = parseHeader(headers);
+
+        return blueSkyApiService.getFollows(session, session.did());
+    }
+
+    @GetMapping("/did/{did}/followers")
+    public Followers getFollowers(@RequestHeader HttpHeaders headers, @PathVariable String did) {
+        return blueSkyApiService.getFollowers(parseHeader(headers), did);
+    }
+
+    @GetMapping("/did/{did}/follows")
+    public Follows getFollows(@RequestHeader HttpHeaders headers, @PathVariable String did) {
+        return blueSkyApiService.getFollows(parseHeader(headers), did);
     }
 
     @GetMapping("/author-feed")

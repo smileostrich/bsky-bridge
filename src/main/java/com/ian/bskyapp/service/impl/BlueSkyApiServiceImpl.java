@@ -60,14 +60,14 @@ public class BlueSkyApiServiceImpl implements BlueSkyApiService {
                 API_GRAPH_BLOCK);
     }
 
-    public Followers getFollowers(Session session) {
-        HttpUrl url = buildUrl("xrpc/app.bsky.graph.getFollowers", "actor", session.did());
+    public Followers getFollowers(Session session, String did) {
+        HttpUrl url = buildUrl("xrpc/app.bsky.graph.getFollowers", "actor", did);
 
         return executeGetRequest(session, url, Followers.class);
     }
 
-    public Follows getFollows(Session session) {
-        HttpUrl url = buildUrl("xrpc/app.bsky.graph.getFollows", "actor", session.did());
+    public Follows getFollows(Session session, String did) {
+        HttpUrl url = buildUrl("xrpc/app.bsky.graph.getFollows", "actor", did);
 
         return executeGetRequest(session, url, Follows.class);
     }

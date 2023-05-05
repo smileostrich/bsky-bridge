@@ -62,13 +62,27 @@ docker-compose up -d
     - `did`: String
 
 ### GET
-- **Endpoint:** `/followers`
+- **Endpoint:** `/followers` (My followers)
   - **Request Headers:**
     - Authorization: Bearer {token}
     - Did: {did}
     - Handle: {handle}
 
-- **Endpoint:** `/follows`
+- **Endpoint:** `/follows` (My follows)
+  - **Request Headers:**
+    - Authorization: Bearer {token}
+    - Did: {did}
+    - Handle: {handle}
+
+- **Endpoint:** `/did/{did}/followers`
+  - **Path Variables:** `did`
+  - **Request Headers:**
+    - Authorization: Bearer {token}
+    - Did: {did}
+    - Handle: {handle}
+
+- **Endpoint:** `/did/{did}/follows`
+  - **Path Variables:** `did`
   - **Request Headers:**
     - Authorization: Bearer {token}
     - Did: {did}

@@ -11,6 +11,7 @@ public record Record(
         String text,
         String $type,
         Reply reply,
+        Record record,
         Embed embed,
         List<Embed> embeds,
         List<Facet> facets,

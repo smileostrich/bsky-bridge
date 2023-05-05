@@ -2,6 +2,7 @@ package com.ian.bskyapp.service.impl;
 
 import com.ian.bskyapp.api.Session;
 import com.ian.bskyapp.entity.Feeds;
+import com.ian.bskyapp.entity.Likes;
 import com.ian.bskyapp.service.BlueSkyApiService;
 import okhttp3.*;
 import org.springframework.stereotype.Service;
@@ -97,7 +98,6 @@ public class BlueSkyApiServiceImpl implements BlueSkyApiService {
         Request request = new Request.Builder()
                 .url(url)
                 .addHeader("Authorization", "Bearer %s".formatted(session.jwt().access()))
-                .addHeader("Content-Type", "application/json")
                 .build();
 
         try (Response response = new OkHttpClient().newCall(request).execute()) {
@@ -105,6 +105,29 @@ public class BlueSkyApiServiceImpl implements BlueSkyApiService {
                 throw new IllegalStateException("API error: " + response.body().string());
 
             return objectMapperWithDate().readValue(response.body().string(), Feeds.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Likes getLikes(Session session, String uri) {
+        HttpUrl url = new HttpUrl.Builder()
+                .scheme(HTTPS)
+                .host(HOST)
+                .addPathSegments("xrpc/app.bsky.feed.getLikes")
+                .addEncodedQueryParameter("uri", uri)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("Authorization", "Bearer %s".formatted(session.jwt().access()))
+                .build();
+
+        try (Response response = new OkHttpClient().newCall(request).execute()) {
+            if (response.code() == 400)
+                throw new IllegalStateException("API error: " + response.body().string());
+
+            return objectMapperWithDate().readValue(response.body().string(), Likes.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

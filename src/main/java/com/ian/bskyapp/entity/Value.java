@@ -8,5 +8,6 @@ public record Value(
         String $type,
         Embed embed,
         LocalDateTime createdAt,
-        List<Facet> facets) {
+        List<Facet> facets,
+        Reply reply) {
 }

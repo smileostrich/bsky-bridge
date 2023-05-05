@@ -2,10 +2,7 @@ package com.ian.bskyapp.entity;
 
 import java.util.List;
 
-public record Embed(
+public record Media(
         String $type,
-        Record record,
-        Media media,
-        External external,
         List<Images> images) {
 }

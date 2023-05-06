@@ -1,11 +1,16 @@
 package com.ian.bskyapp.controller;
 
-import com.ian.bskyapp.entity.*;
+import com.ian.bskyapp.entity.Feeds;
+import com.ian.bskyapp.entity.Likes;
+import com.ian.bskyapp.entity.Session;
+import com.ian.bskyapp.entity.StrongRef;
 import com.ian.bskyapp.entity.dto.*;
 import com.ian.bskyapp.service.BlueSkyApiService;
 import com.ian.bskyapp.service.UserService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 import static com.ian.bskyapp.util.ATProtocolUtil.getAtpUri;
 import static com.ian.bskyapp.util.HttpUtil.parseHeader;
@@ -52,42 +57,61 @@ public class BlueSkyRestController {
     }
 
     @GetMapping("/followers")
-    public Followers getMyFollowers(@RequestHeader HttpHeaders headers) {
+    public Followers getFollowers(@RequestHeader HttpHeaders headers,
+                                  @RequestParam(value = "did", required = false) Optional<String> did,
+                                  @RequestParam(value = "limit", required = false) Optional<Integer> limit,
+                                  @RequestParam(value = "cursor", required = false) Optional<String> cursor) {
         Session session = parseHeader(headers);
 
-        return blueSkyApiService.getFollowers(session, session.did());
+        if (did.isEmpty())
+            did = Optional.of(session.did());
+
+        return blueSkyApiService.getFollowers(session, did, limit, cursor);
     }
 
     @GetMapping("/follows")
-    public Follows getMyFollows(@RequestHeader HttpHeaders headers) {
+    public Follows getFollows(@RequestHeader HttpHeaders headers,
+                              @RequestParam(value = "did", required = false) Optional<String> did,
+                              @RequestParam(value = "limit", required = false) Optional<Integer> limit,
+                              @RequestParam(value = "cursor", required = false) Optional<String> cursor) {
         Session session = parseHeader(headers);
 
-        return blueSkyApiService.getFollows(session, session.did());
-    }
+        if (did.isEmpty())
+            did = Optional.of(session.did());
 
-    @GetMapping("/did/{did}/followers")
-    public Followers getFollowers(@RequestHeader HttpHeaders headers, @PathVariable String did) {
-        return blueSkyApiService.getFollowers(parseHeader(headers), did);
-    }
-
-    @GetMapping("/did/{did}/follows")
-    public Follows getFollows(@RequestHeader HttpHeaders headers, @PathVariable String did) {
-        return blueSkyApiService.getFollows(parseHeader(headers), did);
+        return blueSkyApiService.getFollows(parseHeader(headers), did, limit, cursor);
     }
 
     @GetMapping("/author-feed")
-    public Feeds getAuthorFeed(@RequestHeader HttpHeaders headers) {
-        return blueSkyApiService.getAuthorFeed(parseHeader(headers));
+    public Feeds getAuthorFeed(@RequestHeader HttpHeaders headers,
+                               @RequestParam(value = "did", required = false) Optional<String> did,
+                               @RequestParam(value = "limit", required = false) Optional<Integer> limit,
+                               @RequestParam(value = "cursor", required = false) Optional<String> cursor) {
+        Session session = parseHeader(headers);
+
+        if (did.isEmpty())
+            did = Optional.of(session.did());
+
+        return blueSkyApiService.getAuthorFeed(parseHeader(headers), did, limit, cursor);
     }
 
     @GetMapping("/timeline")
-    public Feeds getTimeline(@RequestHeader HttpHeaders headers) {
-        return blueSkyApiService.getTimeLine(parseHeader(headers));
+    public Feeds getTimeline(@RequestHeader HttpHeaders headers,
+                             @RequestParam(value = "algorithm", required = false) Optional<String> algorithm,
+                             @RequestParam(value = "limit", required = false) Optional<Integer> limit,
+                             @RequestParam(value = "cursor", required = false) Optional<String> cursor) {
+        return blueSkyApiService.getTimeLine(parseHeader(headers), algorithm, limit, cursor);
     }
 
     @GetMapping("/did/{did}/post/{post}/likes")
-    public Likes getLikes(@RequestHeader HttpHeaders headers, @PathVariable String did, @PathVariable String post) {
-        return blueSkyApiService.getLikes(parseHeader(headers), getAtpUri(did, "app.bsky.feed.post", post));
+    public Likes getLikes(@RequestHeader HttpHeaders headers,
+                          @RequestParam(value = "limit", required = false) Optional<Integer> limit,
+                          @RequestParam(value = "cursor", required = false) Optional<String> cursor,
+                          @PathVariable String did, @PathVariable String post) {
+        return blueSkyApiService.getLikes(parseHeader(headers),
+                Optional.of(getAtpUri(did, "app.bsky.feed.post", post)),
+                limit,
+                cursor);
     }
 
 }

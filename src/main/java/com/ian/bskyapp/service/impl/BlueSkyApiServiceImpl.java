@@ -1,6 +1,10 @@
 package com.ian.bskyapp.service.impl;
 
-import com.ian.bskyapp.entity.*;
+import com.ian.bskyapp.api.*;
+import com.ian.bskyapp.entity.Feeds;
+import com.ian.bskyapp.entity.Likes;
+import com.ian.bskyapp.entity.Session;
+import com.ian.bskyapp.entity.StrongRef;
 import com.ian.bskyapp.entity.dto.Followers;
 import com.ian.bskyapp.entity.dto.Follows;
 import com.ian.bskyapp.service.BlueSkyApiService;
@@ -12,7 +16,9 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
+import java.util.Optional;
 
+import static com.ian.bskyapp.util.HttpUtil.parseHttpUrl;
 import static com.ian.bskyapp.util.JsonUtil.objectMapperWithDate;
 
 @Service
@@ -60,55 +66,37 @@ public class BlueSkyApiServiceImpl implements BlueSkyApiService {
                 API_GRAPH_BLOCK);
     }
 
-    public Followers getFollowers(Session session, String did) {
-        HttpUrl url = buildUrl("xrpc/app.bsky.graph.getFollowers", "actor", did);
-
-        return executeGetRequest(session, url, Followers.class);
+    public Followers getFollowers(Session session, Optional<String> did, Optional<Integer> limit, Optional<String> cursor) {
+        return executeGetRequest(session, new FollowersRequestParams(did, limit, cursor), Followers.class);
     }
 
-    public Follows getFollows(Session session, String did) {
-        HttpUrl url = buildUrl("xrpc/app.bsky.graph.getFollows", "actor", did);
-
-        return executeGetRequest(session, url, Follows.class);
+    public Follows getFollows(Session session, Optional<String> did, Optional<Integer> limit, Optional<String> cursor) {
+        return executeGetRequest(session, new FollowsRequestParams(did, limit, cursor), Follows.class);
     }
 
-    public Feeds getAuthorFeed(Session session) {
-        HttpUrl url = buildUrl("xrpc/app.bsky.feed.getAuthorFeed", "actor", session.did());
-
-        return executeGetRequest(session, url, Feeds.class);
+    public Feeds getAuthorFeed(Session session, Optional<String> did, Optional<Integer> limit, Optional<String> cursor) {
+        return executeGetRequest(session, new AuthorFeedRequestParams(did, limit, cursor), Feeds.class);
     }
 
-    public Feeds getTimeLine(Session session) {
-        HttpUrl url = buildUrl("xrpc/app.bsky.feed.getTimeline", "actor", session.did());
-
-        return executeGetRequest(session, url, Feeds.class);
+    public Feeds getTimeLine(Session session, Optional<String> algorithm, Optional<Integer> limit, Optional<String> cursor) {
+        return executeGetRequest(session, new TimeLineRequestParams(algorithm, limit, cursor, session.did()), Feeds.class);
     }
 
-    public Likes getLikes(Session session, String uri) {
-        HttpUrl url = buildUrl("xrpc/app.bsky.feed.getLikes", "uri", uri);
-
-        return executeGetRequest(session, url, Likes.class);
+    public Likes getLikes(Session session, Optional<String> uri, Optional<Integer> limit, Optional<String> cursor) {
+        return executeGetRequest(session, new LikesRequestParams(uri, limit, cursor), Likes.class);
     }
 
-    private HttpUrl buildUrl(String pathSegments, String queryParamKey, String queryParamValue) {
-        return new HttpUrl.Builder()
-                .scheme(HTTPS)
-                .host(HOST)
-                .addPathSegments(pathSegments)
-                .addEncodedQueryParameter(queryParamKey, queryParamValue)
-                .build();
-    }
+    private <T, P extends ApiRequestParams> T executeGetRequest(Session session, P requestParams, Class<T> responseType) {
+        HttpUrl url = parseHttpUrl(requestParams.path(), requestParams.queryParams());
 
-    private <T> T executeGetRequest(Session session, HttpUrl url, Class<T> responseType) {
         Request request = new Request.Builder()
                 .url(url)
                 .addHeader(HEADER_AUTH, "Bearer %s".formatted(session.jwt().access()))
                 .build();
 
         try (Response response = new OkHttpClient().newCall(request).execute()) {
-            if (response.code() == 400) {
+            if (response.code() == 400)
                 throw new IllegalStateException("API error: " + response.body().string());
-            }
 
             return objectMapperWithDate().readValue(response.body().string(), responseType);
         } catch (IOException e) {

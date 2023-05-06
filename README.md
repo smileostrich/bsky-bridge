@@ -62,50 +62,55 @@ docker-compose up -d
     - `did`: String
 
 ### GET
-- **Endpoint:** `/followers` (My followers)
-  - **Request Headers:**
-    - Authorization: Bearer {token}
-    - Did: {did}
-    - Handle: {handle}
-
-- **Endpoint:** `/follows` (My follows)
-  - **Request Headers:**
-    - Authorization: Bearer {token}
-    - Did: {did}
-    - Handle: {handle}
-
-- **Endpoint:** `/did/{did}/followers`
-  - **Path Variables:** `did`
-  - **Request Headers:**
-    - Authorization: Bearer {token}
-    - Did: {did}
-    - Handle: {handle}
-
-- **Endpoint:** `/did/{did}/follows`
-  - **Path Variables:** `did`
-  - **Request Headers:**
-    - Authorization: Bearer {token}
-    - Did: {did}
-    - Handle: {handle}
-
 - **Endpoint:** `/author-feed`
   - **Request Headers:**
     - Authorization: Bearer {token}
-    - Did: {did}
+    - DID: {did}
     - Handle: {handle}
+  - **Query Parameters:**
+    - `did`: Optional String (default: current user's DID)
+    - `limit`: Optional Integer
+    - `cursor`: Optional String
 
 - **Endpoint:** `/timeline`
   - **Request Headers:**
     - Authorization: Bearer {token}
-    - Did: {did}
+    - DID: {did}
     - Handle: {handle}
+  - **Query Parameters:**
+    - `algorithm`: Optional String
+    - `limit`: Optional Integer
+    - `cursor`: Optional String
 
 - **Endpoint:** `/did/{did}/post/{post}/likes`
   - **Path Variables:** `did`, `postId`
   - **Request Headers:**
     - Authorization: Bearer {token}
-    - Did: {did}
+    - DID: {did}
     - Handle: {handle}
+  - **Query Parameters:**
+    - `limit`: Optional Integer
+    - `cursor`: Optional String
+
+- **Endpoint:** `/followers`
+  - **Request Headers:**
+    - Authorization: Bearer {token}
+    - DID: {did}
+    - Handle: {handle}
+  - **Query Parameters:**
+    - `did`: Optional String (default: current user's DID)
+    - `limit`: Optional Integer
+    - `cursor`: Optional String
+
+- **Endpoint:** `/follows`
+  - **Request Headers:**
+    - Authorization: Bearer {token}
+    - DID: {did}
+    - Handle: {handle}
+  - **Query Parameters:**
+    - `did`: Optional String (default: current user's DID)
+    - `limit`: Optional Integer
+    - `cursor`: Optional String
 
 ## WIP
 Support Twitter and BlueSky API

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public record TimeLineRequestParams(Optional<String> algorithm, Optional<Integer> limit, Optional<String> cursor, String actor) implements ApiRequestParams {
+public record TimeLineRequestParams(Optional<String> algorithm, Optional<Integer> limit, Optional<String> cursor, String actor) implements GetParams {
 
     @Override
     public String path() {

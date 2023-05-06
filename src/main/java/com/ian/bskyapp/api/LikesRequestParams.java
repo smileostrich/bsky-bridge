@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public record LikesRequestParams(Optional<String> uri, Optional<Integer> limit, Optional<String> cursor) implements ApiRequestParams {
+public record LikesRequestParams(Optional<String> uri, Optional<Integer> limit, Optional<String> cursor) implements GetParams {
 
     @Override
     public String path() {

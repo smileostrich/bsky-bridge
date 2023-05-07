@@ -59,15 +59,27 @@ docker-compose up -d
     - Did: {did}
     - Handle: {handle}
   - **Request Body:** JSON object
-    - `rkey`: String
+    - `cid`: String
+    - `uri`: String
 
 ### DELETE
+- **Endpoint:** `/organize/posts`
+  - **Path Variables:** `post`
+  - **Request Headers:**
+    - Authorization: Bearer {token}
+    - DID: {did}
+    - Handle: {handle}
+  - **Request Body:** JSON object
+    - `from`: LocalDateTime
+
 - **Endpoint:** `/post`
   - **Path Variables:** `post`
   - **Request Headers:**
     - Authorization: Bearer {token}
     - DID: {did}
     - Handle: {handle}
+  - **Request Body:** JSON object
+    - `rkey`: String
 
 ### GET
 - **Endpoint:** `/author-feed`

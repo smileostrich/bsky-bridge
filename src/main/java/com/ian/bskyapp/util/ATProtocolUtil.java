@@ -9,4 +9,8 @@ public class ATProtocolUtil {
         return AT_PROTOCOL + String.join(DELIMITER, parameters);
     }
 
+    public static String parseRKey(String uri) {
+        return uri.substring(uri.lastIndexOf("/") + 1);
+    }
+
 }

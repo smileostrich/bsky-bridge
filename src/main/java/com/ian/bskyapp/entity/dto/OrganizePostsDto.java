@@ -1,7 +1,7 @@
 package com.ian.bskyapp.entity.dto;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 public record OrganizePostsDto(
-        LocalDateTime from) {
+        ZonedDateTime from) {
 }

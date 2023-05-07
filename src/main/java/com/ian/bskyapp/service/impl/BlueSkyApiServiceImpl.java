@@ -10,8 +10,7 @@ import com.ian.bskyapp.entity.dto.Follows;
 import com.ian.bskyapp.service.BlueSkyApiService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.Optional;
 
@@ -84,7 +83,7 @@ public class BlueSkyApiServiceImpl implements BlueSkyApiService {
         return Map.of(
                 "$type", type,
                 key, value,
-                "createdAt", LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)
+                "createdAt", ZonedDateTime.now()
         );
     }
 

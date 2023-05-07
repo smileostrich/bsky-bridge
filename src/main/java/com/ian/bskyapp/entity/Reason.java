@@ -1,9 +1,9 @@
 package com.ian.bskyapp.entity;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 public record Reason(
         String $type,
         Author by,
-        LocalDateTime indexedAt) {
+        ZonedDateTime indexedAt) {
 }

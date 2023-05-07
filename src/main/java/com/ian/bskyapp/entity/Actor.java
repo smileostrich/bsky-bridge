@@ -1,6 +1,6 @@
 package com.ian.bskyapp.entity;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 public record Actor(
@@ -9,7 +9,7 @@ public record Actor(
         String displayName,
         String description,
         String avatar,
-        LocalDateTime indexedAt,
+        ZonedDateTime indexedAt,
         Viewer viewer,
         List<Label> labels) {
 }

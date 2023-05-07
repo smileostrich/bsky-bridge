@@ -1,6 +1,6 @@
 package com.ian.bskyapp.entity;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 public record Record(
@@ -16,6 +16,11 @@ public record Record(
         List<Embed> embeds,
         List<Facet> facets,
         List<Label> labels,
-        LocalDateTime createdAt,
-        LocalDateTime indexedAt) {
+        Unofficial unofficial,
+        Viewer viewer,
+        Integer likeCount,
+        Integer replyCount,
+        Integer repostCount,
+        ZonedDateTime createdAt,
+        ZonedDateTime indexedAt) {
 }

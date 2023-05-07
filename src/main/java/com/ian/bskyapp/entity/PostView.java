@@ -1,6 +1,6 @@
 package com.ian.bskyapp.entity;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 public record PostView(
@@ -12,7 +12,7 @@ public record PostView(
         Integer replyCount,
         Integer repostCount,
         Integer likeCount,
-        LocalDateTime indexedAt,
+        ZonedDateTime indexedAt,
         Viewer viewer,
         List<Label> labels) {
 }

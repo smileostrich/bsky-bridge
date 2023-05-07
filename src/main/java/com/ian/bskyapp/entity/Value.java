@@ -1,13 +1,13 @@
 package com.ian.bskyapp.entity;
 
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 public record Value(
         String text,
         String $type,
         Embed embed,
-        LocalDateTime createdAt,
+        ZonedDateTime createdAt,
         List<Facet> facets,
         Reply reply) {
 }

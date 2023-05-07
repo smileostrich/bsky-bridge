@@ -1,18 +1,24 @@
 package com.ian.bskyapp.service.impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ian.bskyapp.entity.CreateSession;
 import com.ian.bskyapp.entity.Jwt;
 import com.ian.bskyapp.entity.Session;
-import com.ian.bskyapp.entity.CreateSession;
 import com.ian.bskyapp.entity.dto.User;
 import com.ian.bskyapp.service.UserService;
 import okhttp3.*;
 import org.springframework.stereotype.Service;
-import java.io.IOException;
 
-import static com.ian.bskyapp.util.JsonUtil.objectMapper;
+import java.io.IOException;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    private final ObjectMapper objectMapper;
+
+    public UserServiceImpl(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     public Session login(User user) {
         HttpUrl url = new HttpUrl.Builder()
@@ -24,7 +30,7 @@ public class UserServiceImpl implements UserService {
         RequestBody body;
         try {
             body = RequestBody.create(
-                    objectMapper().writeValueAsString(user),
+                    objectMapper.writeValueAsString(user),
                     MediaType.get("application/json")
             );
         } catch (IOException e) {
@@ -37,7 +43,7 @@ public class UserServiceImpl implements UserService {
                 .build();
 
         try (Response response = new OkHttpClient().newCall(request).execute()) {
-            CreateSession session = objectMapper()
+            CreateSession session = objectMapper
                     .readValue(response.body().charStream(), CreateSession.class);
 
             Jwt jwt = new Jwt(session.accessJwt(), session.refreshJwt());

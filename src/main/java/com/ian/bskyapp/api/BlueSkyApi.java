@@ -1,5 +1,6 @@
 package com.ian.bskyapp.api;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ian.bskyapp.entity.Session;
 import okhttp3.*;
 import org.springframework.stereotype.Component;
@@ -8,12 +9,17 @@ import java.io.IOException;
 import java.util.Collections;
 
 import static com.ian.bskyapp.util.HttpUtil.parseHttpUrl;
-import static com.ian.bskyapp.util.JsonUtil.objectMapperWithDate;
 
 @Component
 public class BlueSkyApi {
 
+    private final ObjectMapper objectMapper;
+
     private static final String HEADER_AUTH = "Authorization";
+
+    public BlueSkyApi(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     public <T, P extends GetParam> T executeGetRequest(Session session, P requestParams, Class<T> responseType) {
         HttpUrl url = parseHttpUrl(requestParams.path(), requestParams.queryParams());
@@ -27,7 +33,7 @@ public class BlueSkyApi {
             if (response.code() == 400)
                 throw new IllegalStateException("API error: " + response.body().string());
 
-            return objectMapperWithDate().readValue(response.body().string(), responseType);
+            return objectMapper.readValue(response.body().string(), responseType);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -38,8 +44,7 @@ public class BlueSkyApi {
 
         RequestBody body;
         try {
-            body = RequestBody.create(objectMapperWithDate()
-                    .writeValueAsString(requestParams.queryParams()), MediaType.get("application/json"));
+            body = RequestBody.create(objectMapper.writeValueAsString(requestParams.queryParams()), MediaType.get("application/json"));
         } catch (IOException e) {
             throw new IllegalStateException(e);
         }

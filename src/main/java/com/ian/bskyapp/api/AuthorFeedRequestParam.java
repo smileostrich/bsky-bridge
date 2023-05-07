@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public record FollowersRequestParams(Optional<String> did, Optional<Integer> limit, Optional<String> cursor) implements GetParams {
+public record AuthorFeedRequestParam(Optional<String> did, Optional<Integer> limit, Optional<String> cursor) implements GetParam {
 
     @Override
     public String path() {
-        return "xrpc/app.bsky.graph.getFollowers";
+        return "xrpc/app.bsky.feed.getAuthorFeed";
     }
 
     @Override

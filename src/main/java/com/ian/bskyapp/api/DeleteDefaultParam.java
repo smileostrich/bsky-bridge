@@ -3,11 +3,11 @@ package com.ian.bskyapp.api;
 import java.util.HashMap;
 import java.util.Map;
 
-public record PostDefaultParams(String type, String did, Object record) implements PostParams {
+public record DeleteDefaultParam(String type, String did, Object rkey) implements PostParam {
 
     @Override
     public String path() {
-        return "xrpc/com.atproto.repo.createRecord";
+        return "xrpc/com.atproto.repo.deleteRecord";
     }
 
     @Override
@@ -16,7 +16,7 @@ public record PostDefaultParams(String type, String did, Object record) implemen
         queryParams.put("collection", type);
         queryParams.put("$type", type);
         queryParams.put("repo", did);
-        queryParams.put("record", record);
+        queryParams.put("rkey", rkey);
 
         return queryParams;
     }

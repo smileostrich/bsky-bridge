@@ -4,17 +4,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public record LikesRequestParams(Optional<String> uri, Optional<Integer> limit, Optional<String> cursor) implements GetParams {
+public record FollowsRequestParam(Optional<String> did, Optional<Integer> limit, Optional<String> cursor) implements GetParam {
 
     @Override
     public String path() {
-        return "xrpc/app.bsky.feed.getLikes";
+        return "xrpc/app.bsky.graph.getFollows";
     }
 
     @Override
     public Map<String, String> queryParams() {
         Map<String, String> queryParams = new HashMap<>();
-        uri.ifPresent(u -> queryParams.put("uri", u));
+        did.ifPresent(d -> queryParams.put("actor", d));
         limit.ifPresent(l -> queryParams.put("limit", l.toString()));
         cursor.ifPresent(c -> queryParams.put("cursor", c));
 

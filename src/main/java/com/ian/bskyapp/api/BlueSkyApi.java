@@ -15,7 +15,7 @@ public class BlueSkyApi {
 
     private static final String HEADER_AUTH = "Authorization";
 
-    public <T, P extends GetParams> T executeGetRequest(Session session, P requestParams, Class<T> responseType) {
+    public <T, P extends GetParam> T executeGetRequest(Session session, P requestParams, Class<T> responseType) {
         HttpUrl url = parseHttpUrl(requestParams.path(), requestParams.queryParams());
 
         Request request = new Request.Builder()
@@ -33,7 +33,7 @@ public class BlueSkyApi {
         }
     }
 
-    public <P extends PostParams> void executePostRequest(Session session, P requestParams) {
+    public <P extends PostParam> void executePostRequest(Session session, P requestParams) {
         HttpUrl url = parseHttpUrl(requestParams.path(), Collections.emptyMap());
 
         RequestBody body;

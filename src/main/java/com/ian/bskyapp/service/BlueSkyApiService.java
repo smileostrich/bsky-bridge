@@ -18,6 +18,8 @@ public interface BlueSkyApiService {
 
     void block(Session session, String did);
 
+    void deletePost(Session session, String uri);
+
     Followers getFollowers(Session session, Optional<String> did, Optional<Integer> limit, Optional<String> cursor);
 
     Follows getFollows(Session session, Optional<String> did, Optional<Integer> limit, Optional<String> cursor);

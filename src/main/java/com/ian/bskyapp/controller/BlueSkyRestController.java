@@ -56,6 +56,11 @@ public class BlueSkyRestController {
         blueSkyApiService.block(parseHeader(headers), dto.did());
     }
 
+    @DeleteMapping("/post")
+    public void deletePost(@RequestHeader HttpHeaders headers, @RequestBody DeletePostDto dto) {
+        blueSkyApiService.deletePost(parseHeader(headers), dto.rkey());
+    }
+
     @GetMapping("/followers")
     public Followers getFollowers(@RequestHeader HttpHeaders headers,
                                   @RequestParam(value = "did", required = false) Optional<String> did,

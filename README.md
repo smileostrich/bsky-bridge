@@ -56,10 +56,18 @@ docker-compose up -d
 - **Endpoint:** `/block`
   - **Request Headers:**
     - Authorization: Bearer {token}
-    - DID: {did}
+    - Did: {did}
     - Handle: {handle}
   - **Request Body:** JSON object
-    - `did`: String
+    - `rkey`: String
+
+### DELETE
+- **Endpoint:** `/post`
+  - **Path Variables:** `post`
+  - **Request Headers:**
+    - Authorization: Bearer {token}
+    - DID: {did}
+    - Handle: {handle}
 
 ### GET
 - **Endpoint:** `/author-feed`

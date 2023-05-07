@@ -32,47 +32,52 @@ public class BlueSkyApiServiceImpl implements BlueSkyApiService {
 
     public void createPost(Session session, String text) {
         blueSkyApi.executePostRequest(session,
-                new PostDefaultParams(API_FEED_POST, session.did(), parseRecord(API_FEED_POST, "text", text)));
+                new PostDefaultParam(API_FEED_POST, session.did(), parseRecord(API_FEED_POST, "text", text)));
     }
 
     public void repost(Session session, StrongRef strongRef) {
         blueSkyApi.executePostRequest(session,
-                new PostDefaultParams(API_FEED_REPOST, session.did(), parseRecord(API_FEED_REPOST, "subject", strongRef)));
+                new PostDefaultParam(API_FEED_REPOST, session.did(), parseRecord(API_FEED_REPOST, "subject", strongRef)));
     }
 
     public void like(Session session, StrongRef strongRef) {
         blueSkyApi.executePostRequest(session,
-                new PostDefaultParams(API_FEED_LIKE, session.did(), parseRecord(API_FEED_LIKE, "subject", strongRef)));
+                new PostDefaultParam(API_FEED_LIKE, session.did(), parseRecord(API_FEED_LIKE, "subject", strongRef)));
     }
 
     public void follow(Session session, String did) {
         blueSkyApi.executePostRequest(session,
-                new PostDefaultParams(API_GRAPH_FOLLOW, session.did(), parseRecord(API_GRAPH_FOLLOW, "subject", did)));
+                new PostDefaultParam(API_GRAPH_FOLLOW, session.did(), parseRecord(API_GRAPH_FOLLOW, "subject", did)));
     }
 
     public void block(Session session, String did) {
         blueSkyApi.executePostRequest(session,
-                new PostDefaultParams(API_GRAPH_BLOCK, session.did(), parseRecord(API_GRAPH_BLOCK, "subject", did)));
+                new PostDefaultParam(API_GRAPH_BLOCK, session.did(), parseRecord(API_GRAPH_BLOCK, "subject", did)));
+    }
+
+    public void deletePost(Session session, String rkey) {
+        blueSkyApi.executePostRequest(session,
+                new DeleteDefaultParam(API_FEED_POST, session.did(), rkey));
     }
 
     public Followers getFollowers(Session session, Optional<String> did, Optional<Integer> limit, Optional<String> cursor) {
-        return blueSkyApi.executeGetRequest(session, new FollowersRequestParams(did, limit, cursor), Followers.class);
+        return blueSkyApi.executeGetRequest(session, new FollowersRequestParam(did, limit, cursor), Followers.class);
     }
 
     public Follows getFollows(Session session, Optional<String> did, Optional<Integer> limit, Optional<String> cursor) {
-        return blueSkyApi.executeGetRequest(session, new FollowsRequestParams(did, limit, cursor), Follows.class);
+        return blueSkyApi.executeGetRequest(session, new FollowsRequestParam(did, limit, cursor), Follows.class);
     }
 
     public Feeds getAuthorFeed(Session session, Optional<String> did, Optional<Integer> limit, Optional<String> cursor) {
-        return blueSkyApi.executeGetRequest(session, new AuthorFeedRequestParams(did, limit, cursor), Feeds.class);
+        return blueSkyApi.executeGetRequest(session, new AuthorFeedRequestParam(did, limit, cursor), Feeds.class);
     }
 
     public Feeds getTimeLine(Session session, Optional<String> algorithm, Optional<Integer> limit, Optional<String> cursor) {
-        return blueSkyApi.executeGetRequest(session, new TimeLineRequestParams(algorithm, limit, cursor, session.did()), Feeds.class);
+        return blueSkyApi.executeGetRequest(session, new TimeLineRequestParam(algorithm, limit, cursor, session.did()), Feeds.class);
     }
 
     public Likes getLikes(Session session, Optional<String> uri, Optional<Integer> limit, Optional<String> cursor) {
-        return blueSkyApi.executeGetRequest(session, new LikesRequestParams(uri, limit, cursor), Likes.class);
+        return blueSkyApi.executeGetRequest(session, new LikesRequestParam(uri, limit, cursor), Likes.class);
     }
 
     private Map<String, Object> parseRecord(String type, String key, Object value) {

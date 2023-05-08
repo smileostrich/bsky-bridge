@@ -15,17 +15,13 @@ public class ZonedDateTimeDeserializer extends JsonDeserializer<ZonedDateTime> {
     @Override
     public ZonedDateTime deserialize(JsonParser parser, DeserializationContext context) throws IOException {
         String input = parser.getText();
-        ZonedDateTime zonedDateTime;
 
-        if (!input.endsWith("Z")) {
-            LocalDateTime localDateTime = LocalDateTime.parse(input);
-            zonedDateTime = localDateTime.atZone(ZoneId.systemDefault());
-        } else {
-            zonedDateTime = ZonedDateTime.parse(input, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
-                    .withZoneSameInstant(ZoneId.systemDefault());
-        }
+        if (input.contains("+"))
+            return ZonedDateTime.parse(input, DateTimeFormatter.ISO_OFFSET_DATE_TIME).withZoneSameInstant(ZoneId.systemDefault());
+        else if (!input.endsWith("Z"))
+            return LocalDateTime.parse(input).atZone(ZoneId.systemDefault());
 
-        return zonedDateTime;
+        return ZonedDateTime.parse(input, DateTimeFormatter.ISO_OFFSET_DATE_TIME).withZoneSameInstant(ZoneId.systemDefault());
     }
 
 }

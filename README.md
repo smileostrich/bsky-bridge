@@ -19,6 +19,12 @@ docker-compose up -d
     - `identifier`: A unique identifier for the user (not null)
     - `password`: The user's password (not null)
 
+- **Endpoint:** `/refresh`
+  - **Request Headers:**
+    - Authorization: Bearer {token} (caution! this token is refresh token)
+    - Did: {did}
+    - Handle: {handle}
+
 - **Endpoint:** `/post`
   - **Request Headers:**
     - Authorization: Bearer {token}

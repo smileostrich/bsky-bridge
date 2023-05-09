@@ -31,6 +31,11 @@ public class BlueSkyRestController {
         return userService.login(user);
     }
 
+    @PostMapping("/refresh")
+    public Session refreshSession(@RequestHeader HttpHeaders headers) {
+        return userService.refreshSession(parseHeader(headers));
+    }
+
     @PostMapping("/post")
     public void createPost(@RequestHeader HttpHeaders headers, @RequestBody CreatePostDto dto) {
         blueSkyApiService.createPost(parseHeader(headers), dto.text());

@@ -7,4 +7,6 @@ public interface UserService {
 
     Session login(User user);
 
+    Session refreshSession(Session session);
+
 }

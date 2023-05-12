@@ -1,5 +1,5 @@
 # bluesky-api-client
-This is Rest API client for BlueSky API.
+This is implement of ATProtocol for BlueSky.
 Providing helper methods for authentication, fetching timelines, and managing content.
 
 ## Requirements
